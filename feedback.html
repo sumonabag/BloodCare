@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BloodCare -Feedback</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arial">
+   <link rel="stylesheet" href="common-styles.css">
+</head>
+
+<body>
+    <!-- Header with matching nav -->
+    <header>
+        <nav class="container">
+            <div class="logo"><a href="index.html">BloodCare</a></div>
+            <ul class="nav-tabs">
+                <li><a href="index.html" class="tab-link" data-tab="home">Home</a></li>
+                <li><a href="donate.html" class="tab-link" data-tab="donate">Donate</a></li>
+                <li><a href="request.html" class="tab-link" data-tab="request">Request</a></li>
+                <li><a href="findbank.html" class="tab-link" data-tab="find-bank">Find Bank</a></li>
+                <li><a href="feedback.html" class="tab-link active" data-tab="feedback">Feedback</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="hero">
+    <div class="form-container">
+        <div class="form-header">
+            <h1>🩸 Feedback Form</h1>
+            <p>We'd love your feedback!</p>
+        </div>
+        </section>
+        <div class="form-body">
+            <div class="error-message" id="errorMessage"></div>
+            <div class="loading" id="loadingMessage">
+                <div class="spinner"></div>
+                <p>Submitting Your Feedback..</p>
+            </div>
+            
+            <form id="bloodDonorForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="rating">How would you rate your experience? *</label>
+                    <select id="rating" name="rating" required>
+                        <option value="">Select rating</option>
+                        <option value="5">Excellent</option>
+                        <option value="4">Very Good</option>
+                        <option value="3">Good</option>
+                        <option value="2">Fair</option>
+                        <option value="1">Poor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="comments">Additional Comments *</label>
+                    <textarea id="comments" name="comments" rows="4" required></textarea>
+                </div>
+              
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent">I confirm that the feedback provided is accurate and based on my personal experience.</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="contact" name="contact">
+                    <label for="contact">I agree to be contacted for follow-up or future improvements based on my feedback.</label>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    Submit Feedback
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div class="success-popup" id="successPopup">
+        <div class="success-content">
+            <div class="success-icon">✅</div>
+            <div class="success-message">Your Feedback has been successfully submitted!</div>
+            <p>Thank you for sharing your valuable feedback. We appreciate your time and effort in helping us improve our services.</p>
+            <button class="close-button" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <p>&copy; Developed with <span style="color:red;">&#10084;</span> by Sumona and Krutika</p>
+            <p>Saving lives, one donation at a time.</p>
+            <div class="social-links">
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Get current location
+        function getLocation() {
+            const locationDisplay = document.getElementById('locationDisplay');
+            const latInput = document.getElementById('latitude');
+            const lngInput = document.getElementById('longitude');
+            
+            if (navigator.geolocation) {
+                locationDisplay.innerHTML = 'Getting location...';
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        latInput.value = lat;
+                        lngInput.value = lng;
+                        
+                        locationDisplay.innerHTML = `
+                            <strong>Location captured:</strong><br>
+                            Latitude: ${lat.toFixed(6)}<br>
+                            Longitude: ${lng.toFixed(6)}
+                        `;
+                    },
+                    function(error) {
+                        locationDisplay.innerHTML = 'Error getting location: ' + error.message;
+                    }
+                );
+            } else {
+                locationDisplay.innerHTML = 'Geolocation is not supported by this browser.';
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show loading state
+        function showLoading(show) {
+            const loadingDiv = document.getElementById('loadingMessage');
+            const submitButton = document.getElementById('submitButton');
+            
+            if (show) {
+                loadingDiv.style.display = 'block';
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+            } else {
+                loadingDiv.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Registration';
+            }
+        }
+
+        // Form submission
+        document.getElementById('bloodDonorForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Show loading
+        showLoading(true);
+
+        // ✅ Explicitly extract all values
+        const data = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            rating: document.getElementById('rating').value,
+            comments: document.getElementById('comments').value, // ✅ this was missing
+            consent: document.getElementById('consent').checked ? 'Yes' : 'No',
+            contact: document.getElementById('contact').checked ? 'Yes' : 'No',
+            timestamp: new Date().toISOString()
+        };
+
+        // Google Apps Script Web App URL
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLirtKQ3yU0KDmzWVbuFldexw_vnCL1mFK7vcmYd3D_Q2tdIY_FCnlCTak_1_ov_bE/exec';
+
+        // ✅ Use "no-cors" for Google Apps Script
+        fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(() => {
+            showLoading(false);
+            document.getElementById('successPopup').style.display = 'flex';
+            document.getElementById('bloodDonorForm').reset();
+            document.getElementById('locationDisplay').innerHTML = 'Click the button above to get your current location';
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            showLoading(false);
+            
+        });
+    });
+    </script>
+    <script>
+      function closePopup() {
+        document.getElementById('successPopup').style.display = 'none';
+      }
+    </script>
+    
+
+    <!-- Keep your existing donor form code here -->
+    <!-- You don't need to change anything below this unless adding extra styles/scripts -->
+    
+    <!-- [Insert your <div class="form-container"> ... full donor form HTML from original here] -->
+    <!-- I haven't included the form again to keep the message clean. Let me know if you want the full file again with everything merged -->
+
+    <!-- Add JavaScript for smooth scrolling/tab switching -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabLinks = document.querySelectorAll('.tab-link');
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const target = this.getAttribute('href');
+                    if (target !== '#') {
+                        e.preventDefault();
+                        const tabId = target.substring(1);
+                        const tabLink = document.querySelector(`.tab-link[data-tab="${tabId}"]`);
+                        if (tabLink) {
+                            tabLinks.forEach(l => l.classList.remove('active'));
+                            tabLink.classList.add('active');
+                        }
+                        window.location.href = target;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

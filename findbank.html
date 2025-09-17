@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BloodCare -Find Blood Bank</title>
+  <link rel="stylesheet" href="common-styles.css">
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo"><a href="index.html">BloodCare</a></div>
+            <ul class="nav-tabs">
+                <li><a href="index.html" class="tab-link" data-tab="home">Home</a></li>
+                <li><a href="donate.html" class="tab-link" data-tab="donate">Donate</a></li>
+                <li><a href="request.html" class="tab-link" data-tab="request">Request</a></li>
+                <li><a href="findbank.html" class="tab-link active" data-tab="find-bank">Find Bank</a></li>
+                <li><a href="feedback.html" class="tab-link" data-tab="feedback">Feedback</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="form-container">
+            <div class="form-header">
+                <h1>🩸 Find Blood Banks</h1>
+                <p>Locate nearby blood banks and check blood availability in real-time</p>
+            </div>
+        </div>
+    </section>
+    
+    <div class="form-body">
+        <div class="container">
+            <div class="search-container">
+                <div class="form-header">
+                    <h1>🔍 Search Blood Banks</h1>
+                    <p>Find blood banks in your area</p>
+                </div>
+                
+                <div class="form-body">
+                    <div class="search-filters">
+                        <div class="filter-group">
+                            <label for="searchState"><h4>State:</label> </br>
+                            <input type="text" id="searchState" placeholder="Enter State" class="form-group input">
+                        </div>
+                        <div class="filter-group">
+                            <label for="searchDistrict"><h4>District:</label>
+                            <input type="text" id="searchDistrict" placeholder="Enter District" class="form-group input">
+                        </div>
+                        <div class="filter-group">
+                            <label for="searchTaluka"><h4>Taluka:</label>
+                            <input type="text" id="searchTaluka" placeholder="Enter Taluka" class="form-group input">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="searchBankName"><h4>Blood Bank Name:</label>
+                            <input type="text" id="searchBankName" placeholder="Enter blood bank name" class="form-group input">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="searchAddress"><h4>Address:</label>
+                            <input type="text" id="searchAddress" placeholder="Enter address" class="form-group input">
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="searchBloodType"><h4>Blood Type:</label></br>
+                            <select id="searchBloodType" class="form-group select">
+                                <option value="">All Blood Types</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <button class="submit-button search-btn" onclick="searchBloodBanks()">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="loadingMessage" class="loading-message">
+                
+            </div>
+
+            <div id="searchResults">
+                <!-- Results will be shown here -->
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; Developed with <span style="color:red;">&#10084;</span> by Sumona and Krutika</p>
+            <p>Saving lives, one donation at a time.</p>
+            <div class="social-links">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Your Google Sheets Web App URL
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxZ_GiLmcIE-xTSK8f-S9ucsPZStw7ZRMADc5Sy68HoFJow0WQvCjGGaOd5YYbsc5zn/exec';
+        
+        let allBloodBanks = [];
+        let debugOutput = document.getElementById('debugOutput');
+
+        // Debug function to test connection
+        async function testConnection() {
+            debugOutput.textContent = 'Testing connection...\n';
+            
+            try {
+                debugOutput.textContent += `Attempting to fetch from: ${GOOGLE_SHEETS_URL}\n`;
+                
+                const response = await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                debugOutput.textContent += `Response status: ${response.status}\n`;
+                debugOutput.textContent += `Response ok: ${response.ok}\n`;
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                debugOutput.textContent += `Response received:\n${JSON.stringify(data, null, 2)}\n`;
+                
+                if (data.success) {
+                    allBloodBanks = data.data;
+                    debugOutput.textContent += `✅ Success! Loaded ${data.data.length} blood banks\n`;
+                    
+                    // Show first record for verification
+                    if (data.data.length > 0) {
+                        debugOutput.textContent += `First record:\n${JSON.stringify(data.data[0], null, 2)}\n`;
+                    }
+                } else {
+                    debugOutput.textContent += `❌ API returned error: ${data.error}\n`;
+                }
+                
+            } catch (error) {
+                debugOutput.textContent += `❌ Connection failed: ${error.message}\n`;
+                debugOutput.textContent += `Error details: ${error.stack}\n`;
+            }
+        }
+
+        // Load initial data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadBloodBanksData();
+            showDefaultResults();
+        });
+
+        async function loadBloodBanksData() {
+            try {
+                const response = await fetch(GOOGLE_SHEETS_URL);
+                const data = await response.json();
+                
+                if (data.success) {
+                    allBloodBanks = data.data;
+                    console.log('✅ Data loaded successfully:', allBloodBanks);
+                } else {
+                    console.error('❌ Error loading data:', data.error);
+                    showError('Failed to load blood bank data: ' + data.error);
+                }
+            } catch (error) {
+                console.error('❌ Error fetching data:', error);
+                showError('Failed to connect to database: ' + error.message);
+            }
+        }
+
+        function showDefaultResults() {
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = `
+                <div class="blood-bank-card">
+                    <div class="bank-name">City General Hospital Blood Bank</div>
+                    <div class="bank-info">
+                        <div class="info-item">
+                            <span>📍</span>
+                            <span>123 Main Street, Mumbai</span>
+                        </div>
+                        <div class="info-item">
+                            <span>📞</span>
+                            <span>+91 98765-43210</span>
+                        </div>
+                        <div class="info-item">
+                            <span>⏰</span>
+                            <span>24/7 Available</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="contact-btn" onclick="contactBank('City General Hospital')">Contact Bank</button>
+                        <button class="contact-btn location-btn" onclick="showLocation('123 Main Street, Mumbai')">📍 Location</button>
+                    </div>
+                </div>
+
+                <div class="blood-bank-card">
+                    <div class="bank-name">Maharashtra State Blood Center</div>
+                    <div class="bank-info">
+                        <div class="info-item">
+                            <span>📍</span>
+                            <span>456 Health Road, Pune</span>
+                        </div>
+                        <div class="info-item">
+                            <span>📞</span>
+                            <span>+91 98765-43211</span>
+                        </div>
+                        <div class="info-item">
+                            <span>⏰</span>
+                            <span>6:00 AM - 10:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="button-group">
+                        <button class="contact-btn" onclick="contactBank('Maharashtra State Blood Center')">Contact Bank</button>
+                        <button class="contact-btn location-btn" onclick="showLocation('456 Health Road, Pune')">📍 Location</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function searchBloodBanks() {
+            const state = document.getElementById('searchState').value;
+            const district = document.getElementById('searchDistrict').value;
+            const taluka = document.getElementById('searchTaluka').value;
+            const bankName = document.getElementById('searchBankName').value;
+            const address = document.getElementById('searchAddress').value;
+            const bloodType = document.getElementById('searchBloodType').value;
+            
+            // Show loading message
+            const loadingDiv = document.getElementById('loadingMessage');
+            const resultsDiv = document.getElementById('searchResults');
+            
+            loadingDiv.style.display = 'block';
+            resultsDiv.innerHTML = '';
+            
+            try {
+                // If no Google Sheets data is loaded, try to load it first
+                if (allBloodBanks.length === 0) {
+                    console.log('No data loaded, attempting to fetch...');
+                    await loadBloodBanksData();
+                }
+                
+                // Filter blood banks based on search criteria
+                let filteredBanks = allBloodBanks.filter(bank => {
+                    let matches = true;
+                    
+                    if (state && bank.state && bank.state.toLowerCase() !== state.toLowerCase()) {
+                        matches = false;
+                    }
+                    if (district && bank.district && bank.district.toLowerCase() !== district.toLowerCase()) {
+                        matches = false;
+                    }
+                    if (taluka && bank.taluka && bank.taluka.toLowerCase() !== taluka.toLowerCase()) {
+                        matches = false;
+                    }
+                    if (bankName && bank.name && !bank.name.toLowerCase().includes(bankName.toLowerCase())) {
+                        matches = false;
+                    }
+                    if (address && bank.address && !bank.address.toLowerCase().includes(address.toLowerCase())) {
+                        matches = false;
+                    }
+                    if (bloodType && bank.availableBloodTypes && !bank.availableBloodTypes.includes(bloodType)) {
+                        matches = false;
+                    }
+                    
+                    return matches;
+                });
+                
+                setTimeout(() => {
+                    loadingDiv.style.display = 'none';
+                    displayResults(filteredBanks);
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Search error:', error);
+                loadingDiv.style.display = 'none';
+                showError('Error occurred during search: ' + error.message);
+            }
+        }
+
+        function displayResults(banks) {
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (banks.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="no-results">
+                        <h3>No blood banks found</h3>
+                        <p>Try adjusting your search criteria or check back later.</p>
+                        <p><strong>Loaded ${allBloodBanks.length} total records from Google Sheets</strong></p>
+                    </div>
+                `;
+                return;
+            }
+            
+            resultsDiv.innerHTML = banks.map(bank => `
+                <div class="blood-bank-card">
+                    <div class="bank-name">${bank.name || 'Unnamed Blood Bank'}</div>
+                    <div class="bank-info">
+                        <div class="info-item">
+                            <span>📍</span>
+                            <span>${bank.address || 'Address not available'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span>📞</span>
+                            <span>${bank.phone || 'Phone not available'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span>⏰</span>
+                            <span>${bank.timing || 'Contact for timings'}</span>
+                        </div>
+                        ${bank.availableBloodTypes ? `
+                        <div class="info-item">
+                            <span>🩸</span>
+                            <span>Available: ${bank.availableBloodTypes}</span>
+                        </div>
+                        ` : ''}
+                        ${bank.email ? `
+                        <div class="info-item">
+                            <span>📧</span>
+                            <span>${bank.email}</span>
+                        </div>
+                        ` : ''}
+                    </div>
+                    <div class="button-group">
+                        <button class="contact-btn" onclick="contactBank('${bank.name || 'Blood Bank'}')">Contact Bank</button>
+                        <button class="contact-btn location-btn" onclick="showLocation('${bank.address || ''}')">📍 Location</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function contactBank(bankName) {
+            const bank = allBloodBanks.find(b => b.name === bankName);
+            if (bank) {
+                alert(`Contacting ${bankName}...\n\n📞 Phone: ${bank.phone}\n📧 Email: ${bank.email || 'Not available'}\n\nThis would typically:\n- Show contact details\n- Allow direct calling\n- Enable appointment booking`);
+            } else {
+                alert(`Contacting ${bankName}...\n\nThis would typically:\n- Show contact details\n- Allow direct calling\n- Show directions\n- Enable appointment booking`);
+            }
+        }
+
+        function showLocation(address) {
+            if (!address) {
+                alert('Address not available for this blood bank.');
+                return;
+            }
+            
+            const encodedAddress = encodeURIComponent(address);
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+            
+            if (confirm(`Open location in Google Maps?\n\n📍 ${address}`)) {
+                window.open(mapsUrl, '_blank');
+            }
+        }
+
+        function showError(message) {
+            const resultsDiv = document.getElementById('searchResults');
+            resultsDiv.innerHTML = `
+                <div class="error-message">
+                    <h3>⚠️ Error</h3>      
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

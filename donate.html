@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BloodCare - Donate Blood</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arial">
+  <link rel="stylesheet" href="common-styles.css">
+</head>
+
+<body>
+    <!-- Header with matching nav -->
+    <header>
+        <nav class="container">
+            <div class="logo"><a href="index.html">BloodCare</a></div>
+            <ul class="nav-tabs">
+                <li><a href="index.html" class="tab-link" data-tab="home">Home</a></li>
+                <li><a href="donate.html" class="tab-link active" data-tab="donate">Donate</a></li>
+                <li><a href="request.html" class="tab-link" data-tab="request">Request</a></li>
+                <li><a href="findbank.html" class="tab-link" data-tab="find-bank">Find Bank</a></li>
+                <li><a href="feedback.html" class="tab-link" data-tab="feedback">Feedback</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="hero">
+    <div class="form-container">
+        <div class="form-header">
+            <h1>🩸Blood Donor Registration</h1>
+            <p>Save Lives - Donate Blood</p>
+        </div>
+        </section>
+        
+        <div class="form-body">
+            <div class="error-message" id="errorMessage"></div>
+            <div class="loading" id="loadingMessage">
+                <div class="spinner"></div>
+                <p>Submitting Your registration...</p>
+            </div>
+            
+            <form id="bloodDonorForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" name="lastName" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input type="number" id="age" name="age" min="18" max="65" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender *</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bloodType">Blood Type *</label>
+                        <select id="bloodType" name="bloodType" required>
+                            <option value="">Select Blood Type</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="weight">Weight (kg) *</label>
+                        <input type="number" id="weight" name="weight" min="50" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                         <label for="state">State *</label>
+                            <select id="state" name="state" required>
+                              <option value="">Select State</option>
+                            </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="district">District *</label>
+                          <select id="district" name="district" required>
+                            <option value="">Select District</option>
+                          </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                          <label for="taluka">Taluka *</label>
+                            <select id="taluka" name="taluka" required>
+                              <option value="">Select Taluka</option>
+                            </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="city">City *</label>
+                            <select id="city" name="city" required>
+                              <option value="">Select City</option>
+                            </select>
+                    </div>
+                </div>
+
+                <div class="location-section">
+                    <h3>Current Location</h3>
+                    <button type="button" class="location-button" onclick="getLocation()">
+                        📍 Get Current Location
+                    </button>
+                    <div class="location-display" id="locationDisplay">
+                        Click the button above to get your current location
+                    </div>
+                    <input type="hidden" id="latitude" name="latitude">
+                    <input type="hidden" id="longitude" name="longitude">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="lastDonation">Last Donation Date</label>
+                        <input type="date" id="lastDonation" name="lastDonation">
+                    </div>
+                    <div class="form-group">
+                        <label for="medicalConditions">Medical Conditions</label>
+                        <input type="text" id="medicalConditions" name="medicalConditions" placeholder="None">
+                    </div>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="consent" name="consent" required>
+                    <label for="consent">I consent to donate blood and confirm that all information provided is accurate.</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="contact" name="contact">
+                    <label for="contact">I agree to be contacted for future blood donation drives.</label>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    Submit Registration
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div class="success-popup" id="successPopup">
+        <div class="success-content">
+            <div class="success-icon">✅</div>
+            <div class="success-message">Your form is Successfully submitted!</div>
+            <p>Thank you for registering as a blood donor. You will be contacted soon.</p>
+            <button class="close-button" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <p>&copy; Developed with <span style="color:red;">&#10084;</span> by Sumona and Krutika</p>
+            <p>Saving lives, one donation at a time.</p>
+            <div class="social-links">
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Get current location
+        function getLocation() {
+            const locationDisplay = document.getElementById('locationDisplay');
+            const latInput = document.getElementById('latitude');
+            const lngInput = document.getElementById('longitude');
+            
+            if (navigator.geolocation) {
+                locationDisplay.innerHTML = 'Getting location...';
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        latInput.value = lat;
+                        lngInput.value = lng;
+                        
+                        locationDisplay.innerHTML = `
+                            <strong>Location captured:</strong><br>
+                            Latitude: ${lat.toFixed(6)}<br>
+                            Longitude: ${lng.toFixed(6)}
+                        `;
+                    },
+                    function(error) {
+                        locationDisplay.innerHTML = 'Error getting location: ' + error.message;
+                    }
+                );
+            } else {
+                locationDisplay.innerHTML = 'Geolocation is not supported by this browser.';
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Show loading state
+        function showLoading(show) {
+            const loadingDiv = document.getElementById('loadingMessage');
+            const submitButton = document.getElementById('submitButton');
+            
+            if (show) {
+                loadingDiv.style.display = 'block';
+                submitButton.disabled = true;
+                submitButton.textContent = 'Submitting...';
+            } else {
+                loadingDiv.style.display = 'none';
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit Registration';
+            }
+        }
+
+        // Form submission
+        document.getElementById('bloodDonorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            showLoading(true);
+            
+            // Get form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Convert FormData to regular object
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+            
+            // Handle checkboxes properly
+            data.consent = document.getElementById('consent').checked ? 'Yes' : 'No';
+            data.contact = document.getElementById('contact').checked ? 'Yes' : 'No';
+            
+            // Add timestamp
+            data.timestamp = new Date().toISOString();
+            
+            // Log data for debugging
+            console.log('Form Data:', data);
+            
+            // Google Apps Script URL
+            const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbywBvpen_ryAQUNlH0IK_fETxIgl4eusib93cIddfzT4MoGPWOyqbn2K4Pd4fh0vA_y/exec';
+            
+            // Send data to Google Sheets with proper error handling
+            fetch(GOOGLE_APPS_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Important for Google Apps Script
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                // With no-cors mode, we can't read the response
+                // So we assume success if no error is thrown
+                console.log('Data sent successfully');
+                showLoading(false);
+                
+                // Show success popup
+                document.getElementById('successPopup').style.display = 'flex';
+                
+                // Reset form
+                document.getElementById('bloodDonorForm').reset();
+                document.getElementById('locationDisplay').innerHTML = 'Click the button above to get your current location';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showLoading(false);
+                showError('There was an error submitting your form. Please try again.');
+            });
+        });
+
+        // Close popup
+        function closePopup() {
+            document.getElementById('successPopup').style.display = 'none';
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('successPopup').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+    </script>
+
+    <!-- Keep your existing donor form code here -->
+    <!-- You don't need to change anything below this unless adding extra styles/scripts -->
+    
+    <!-- [Insert your <div class="form-container"> ... full donor form HTML from original here] -->
+    <!-- I haven't included the form again to keep the message clean. Let me know if you want the full file again with everything merged -->
+
+    <!-- Add JavaScript for smooth scrolling/tab switching -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabLinks = document.querySelectorAll('.tab-link');
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const target = this.getAttribute('href');
+                    if (target !== '#') {
+                        e.preventDefault();
+                        const tabId = target.substring(1);
+                        const tabLink = document.querySelector(`.tab-link[data-tab="${tabId}"]`);
+                        if (tabLink) {
+                            tabLinks.forEach(l => l.classList.remove('active'));
+                            tabLink.classList.add('active');
+                        }
+                        window.location.href = target;
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+    const locationData = {
+           "Maharashtra": {
+                  "Mumbai City": {
+                     "Mumbai City": ["Colaba", "Fort", "Byculla", "Girgaon", "Worli"]
+                   },
+                   "Mumbai Suburban": {
+                     "Mumbai Suburban": ["Andheri", "Bandra", "Khar", "Malad", "Borivali"]
+                   },
+                   "Thane": {
+                     "Thane": ["Thane", "Ghodbunder", "Kopri"],
+                     "Kalyan": ["Kalyan East", "Kalyan West"],
+                     "Vasai": ["Vasai", "Nalasopara", "Virar"],
+                     "Bhiwandi": ["Bhiwandi", "Padgha"],
+                     "Ambarnath": ["Ambarnath", "Anand Nagar"],
+                     "Palghar": ["Palghar", "Boisar"],
+                     "Ulhasnagar": ["Ulhasnagar 1", "Ulhasnagar 2"],
+                     "Dahanu": ["Dahanu", "Gholvad"],
+                     "Shahapur": ["Shahapur", "Asangaon"],
+                     "Murbad": ["Murbad", "Titwala"],
+                     "Vada": ["Vada", "Saphale"],
+                     "Talasari": ["Talasari", "Dahanu Road"],
+                     "Jawhar": ["Jawhar", "Sakharshet"],
+                     "Vikramgad": ["Vikramgad", "Paljuni"],
+                     "Mokhada": ["Mokhada", "Khodala"]
+                   },
+                   "Raigad": {
+                     "Panvel": ["Panvel", "New Panvel", "Khandeshwar"],
+                     "Alibag": ["Alibag", "Varsoli"],
+                     "Karjat": ["Karjat", "Neral"],
+                     "Khalapur": ["Khalapur", "Imagica City"],
+                     "Pen": ["Pen", "Vadkhal"],
+                     "Mahad": ["Mahad", "Birwadi"],
+                     "Roha": ["Roha", "Kolad"],
+                     "Uran": ["Uran", "JNPT", "Karanja"],
+                     "Mangaon": ["Mangaon", "Nizampur"],
+                     "Shrivardhan": ["Shrivardhan", "Diveagar"],
+                     "Murud": ["Murud", "Revdanda"],
+                     "Sudhagad": ["Pali", "Sudhagad"],
+                     "Mhasla": ["Mhasla", "Goregaon"],
+                     "Poladpur": ["Poladpur", "Mahabaleshwar Ghat"],
+                     "Tala": ["Tala", "Dighi Port"]
+                   },
+                   "Ratnagiri": {
+                     "Ratnagiri": ["Ratnagiri", "Mirjole"],
+                     "Chiplun": ["Chiplun", "Sawarde"],
+                     "Sangameshwar": ["Devrukh", "Sangameshwar"],
+                     "Khed": ["Khed", "Lote"],
+                     "Dapoli": ["Dapoli", "Harnai"],
+                     "Rajapur": ["Rajapur", "Jaitapur"],
+                     "Guhagar": ["Guhagar", "Velneshwar"],
+                     "Lanja": ["Lanja", "Kurli"],
+                     "Mandangad": ["Mandangad", "Bankot"]
+                   },
+                   "Sindhudurg": {
+                     "Kudal": ["Kudal", "Oras"],
+                     "Sawantwadi": ["Sawantwadi", "Vengurla Road"],
+                     "Kankavli": ["Kankavli", "Kasal"],
+                     "Devgad": ["Devgad", "Jamsande"],
+                     "Malwan": ["Malvan", "Tarkarli"],
+                     "Vengurla": ["Vengurla", "Shiroda"],
+                     "Dodamarg": ["Dodamarg", "Tillari"],
+                     "Vaibhavvadi": ["Vaibhavwadi", "Karul"]
+                   },
+                   "Satara": {
+                     "Karad": ["Karad", "Malkapur"],
+                     "Satara": ["Satara", "Godoli"],
+                     "Phaltan": ["Phaltan", "Barad"],
+                     "Patan": ["Patan", "Koyananagar"],
+                     "Khatav": ["Vaduj", "Mayani"],
+                     "Koregaon": ["Koregaon", "Pimpode Budruk"],
+                     "Man": ["Dahiwadi", "Man"],
+                     "Wai": ["Wai", "Bhuinj"],
+                     "Khandala": ["Khandala", "Lonand"],
+                     "Jaoli": ["Medha", "Tapola"],
+                     "Mahabaleshwar": ["Mahabaleshwar", "Panchgani"]
+                   },
+                   "Sangli": {
+                     "Miraj": ["Miraj", "Vishrambag"],
+                     "Walwa": ["Islampur", "Walwa"],
+                     "Jat": ["Jat", "Shegaon"],
+                     "Tasgaon": ["Tasgaon", "Kavathe Ekand"],
+                     "Khanapur (Vita)": ["Vita", "Khanapur"],
+                     "Palus": ["Palus", "Bhoini"],
+                     "Shirala": ["Shirala", "Arala"],
+                     "Kavathemahankal": ["Kavathe Mahankal", "Dudhondi"],
+                     "Kadegaon": ["Kadegaon", "Natepute"],
+                     "Atpadi": ["Atpadi", "Kushtagi"]
+                   },
+                   "Solapur": {
+                     "Solapur North": ["Solapur", "MIDC"],
+                     "Malshiras": ["Malshiras", "Akluj"],
+                     "Pandharpur": ["Pandharpur", "Mangalwedha Road"],
+                     "Barshi": ["Barshi", "Bhoom Road"],
+                     "Madha": ["Madha", "Kurduwadi"],
+                     "Sangole": ["Sangole", "Mandrup"],
+                     "Akkalkot": ["Akkalkot", "Boroti"],
+                     "Mohol": ["Mohol", "Mandrup"],
+                     "Solapur South": ["Hotgi", "Kegaon"],
+                     "Karmala": ["Karmala", "Jeur"],
+                     "Mangalvedhe": ["Mangalvedha", "Solapur Road"]
+                   },
+                   "Kolhapur": {
+                     "Karvir": ["Kolhapur", "Rankala"],
+                     "Hatkanangle": ["Ichalkaranji", "Shiroli"],
+                     "Shirol": ["Shirol", "Kurundwad"],
+                     "Kagal": ["Kagal", "Nipani Border"],
+                     "Panhala": ["Panhala", "Top"],
+                     "Gadhinglaj": ["Gadhinglaj", "Kadgaon"],
+                     "Radhanagari": ["Radhanagari", "Kalammawadi"],
+                     "Chandgad": ["Chandgad", "Belgaon Border"],
+                     "Shahuwadi": ["Shahuwadi", "Padli"],
+                     "Bhudargad": ["Patgaon", "Gaganbawda Road"],
+                     "Ajra": ["Ajra", "Nesari"],
+                     "Bavda": ["Bavda", "Amba Ghat"]
+                   },
+                   "pune": {
+                     "Pune City": ["Pune", "Shivajinagar", "Kothrud", "Swargate"],
+                     "Haveli": ["Wagholi", "Sinhagad", "Dhayari", "Warje"],
+                     "Khed": ["Rajgurunagar", "Chakan"],
+                     "Baramati": ["Baramati", "Malegaon Khurd"],
+                     "Junnar": ["Junnar", "Otur"],
+                     "Shirur": ["Shirur", "Ranjangaon"],
+                     "Indapur": ["Indapur", "Bhigwan"],
+                     "Daund": ["Daund", "Yawat"],
+                     "Mawal": ["Talegaon Dabhade", "Vadgaon"],
+                     "Ambegaon": ["Ghodegaon", "Manchar"],
+                     "Purandhar": ["Saswad", "Narayanpur"],
+                     "Bhor": ["Bhor", "Velhe"],
+                     "Mulshi": ["Paud", "Pirangut"],
+                     "Velhe": ["Velhe", "Kelwade"]
+                   }
+                   
+                  }
+
+    };
+
+    const stateSelect = document.getElementById("state");
+    const districtSelect = document.getElementById("district");
+    const talukaSelect = document.getElementById("taluka");
+    const citySelect = document.getElementById("city");
+
+    // Populate states
+    for (let state in locationData) {
+      stateSelect.add(new Option(state, state));
+    }
+
+    stateSelect.addEventListener("change", () => {
+      districtSelect.length = 1;
+      talukaSelect.length = 1;
+      citySelect.length = 1;
+      const selectedState = stateSelect.value;
+      if (selectedState && locationData[selectedState]) {
+        for (let district in locationData[selectedState]) {
+          districtSelect.add(new Option(district, district));
+        }
+      }
+    });
+
+    districtSelect.addEventListener("change", () => {
+      talukaSelect.length = 1;
+      citySelect.length = 1;
+      const selectedState = stateSelect.value;
+      const selectedDistrict = districtSelect.value;
+      if (selectedState && selectedDistrict && locationData[selectedState][selectedDistrict]) {
+        for (let taluka in locationData[selectedState][selectedDistrict]) {
+          talukaSelect.add(new Option(taluka, taluka));
+        }
+      }
+    });
+
+    talukaSelect.addEventListener("change", () => {
+      citySelect.length = 1;
+      const selectedState = stateSelect.value;
+      const selectedDistrict = districtSelect.value;
+      const selectedTaluka = talukaSelect.value;
+      if (selectedState && selectedDistrict && selectedTaluka && locationData[selectedState][selectedDistrict][selectedTaluka]) {
+        locationData[selectedState][selectedDistrict][selectedTaluka].forEach(city => {
+          citySelect.add(new Option(city, city));
+        });
+      }
+    });
+  </script>
+</body>
+</html>

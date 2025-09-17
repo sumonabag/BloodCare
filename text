@@ -1,0 +1,132 @@
+ "Maharashtra": {
+                  "Mumbai City": {
+                     "Mumbai City": ["Colaba", "Fort", "Byculla", "Girgaon", "Worli"]
+                   },
+                   "Mumbai Suburban": {
+                     "Mumbai Suburban": ["Andheri", "Bandra", "Khar", "Malad", "Borivali"]
+                   },
+                   "Thane": {
+                     "Thane": ["Thane", "Ghodbunder", "Kopri"],
+                     "Kalyan": ["Kalyan East", "Kalyan West"],
+                     "Vasai": ["Vasai", "Nalasopara", "Virar"],
+                     "Bhiwandi": ["Bhiwandi", "Padgha"],
+                     "Ambarnath": ["Ambarnath", "Anand Nagar"],
+                     "Palghar": ["Palghar", "Boisar"],
+                     "Ulhasnagar": ["Ulhasnagar 1", "Ulhasnagar 2"],
+                     "Dahanu": ["Dahanu", "Gholvad"],
+                     "Shahapur": ["Shahapur", "Asangaon"],
+                     "Murbad": ["Murbad", "Titwala"],
+                     "Vada": ["Vada", "Saphale"],
+                     "Talasari": ["Talasari", "Dahanu Road"],
+                     "Jawhar": ["Jawhar", "Sakharshet"],
+                     "Vikramgad": ["Vikramgad", "Paljuni"],
+                     "Mokhada": ["Mokhada", "Khodala"]
+                   },
+                   "Raigad": {
+                     "Panvel": ["Panvel", "New Panvel", "Khandeshwar"],
+                     "Alibag": ["Alibag", "Varsoli"],
+                     "Karjat": ["Karjat", "Neral"],
+                     "Khalapur": ["Khalapur", "Imagica City"],
+                     "Pen": ["Pen", "Vadkhal"],
+                     "Mahad": ["Mahad", "Birwadi"],
+                     "Roha": ["Roha", "Kolad"],
+                     "Uran": ["Uran", "JNPT", "Karanja"],
+                     "Mangaon": ["Mangaon", "Nizampur"],
+                     "Shrivardhan": ["Shrivardhan", "Diveagar"],
+                     "Murud": ["Murud", "Revdanda"],
+                     "Sudhagad": ["Pali", "Sudhagad"],
+                     "Mhasla": ["Mhasla", "Goregaon"],
+                     "Poladpur": ["Poladpur", "Mahabaleshwar Ghat"],
+                     "Tala": ["Tala", "Dighi Port"]
+                   },
+                   "Ratnagiri": {
+                     "Ratnagiri": ["Ratnagiri", "Mirjole"],
+                     "Chiplun": ["Chiplun", "Sawarde"],
+                     "Sangameshwar": ["Devrukh", "Sangameshwar"],
+                     "Khed": ["Khed", "Lote"],
+                     "Dapoli": ["Dapoli", "Harnai"],
+                     "Rajapur": ["Rajapur", "Jaitapur"],
+                     "Guhagar": ["Guhagar", "Velneshwar"],
+                     "Lanja": ["Lanja", "Kurli"],
+                     "Mandangad": ["Mandangad", "Bankot"]
+                   },
+                   "Sindhudurg": {
+                     "Kudal": ["Kudal", "Oras"],
+                     "Sawantwadi": ["Sawantwadi", "Vengurla Road"],
+                     "Kankavli": ["Kankavli", "Kasal"],
+                     "Devgad": ["Devgad", "Jamsande"],
+                     "Malwan": ["Malvan", "Tarkarli"],
+                     "Vengurla": ["Vengurla", "Shiroda"],
+                     "Dodamarg": ["Dodamarg", "Tillari"],
+                     "Vaibhavvadi": ["Vaibhavwadi", "Karul"]
+                   },
+                   "Satara": {
+                     "Karad": ["Karad", "Malkapur"],
+                     "Satara": ["Satara", "Godoli"],
+                     "Phaltan": ["Phaltan", "Barad"],
+                     "Patan": ["Patan", "Koyananagar"],
+                     "Khatav": ["Vaduj", "Mayani"],
+                     "Koregaon": ["Koregaon", "Pimpode Budruk"],
+                     "Man": ["Dahiwadi", "Man"],
+                     "Wai": ["Wai", "Bhuinj"],
+                     "Khandala": ["Khandala", "Lonand"],
+                     "Jaoli": ["Medha", "Tapola"],
+                     "Mahabaleshwar": ["Mahabaleshwar", "Panchgani"]
+                   },
+                   "Sangli": {
+                     "Miraj": ["Miraj", "Vishrambag"],
+                     "Walwa": ["Islampur", "Walwa"],
+                     "Jat": ["Jat", "Shegaon"],
+                     "Tasgaon": ["Tasgaon", "Kavathe Ekand"],
+                     "Khanapur (Vita)": ["Vita", "Khanapur"],
+                     "Palus": ["Palus", "Bhoini"],
+                     "Shirala": ["Shirala", "Arala"],
+                     "Kavathemahankal": ["Kavathe Mahankal", "Dudhondi"],
+                     "Kadegaon": ["Kadegaon", "Natepute"],
+                     "Atpadi": ["Atpadi", "Kushtagi"]
+                   },
+                   "Solapur": {
+                     "Solapur North": ["Solapur", "MIDC"],
+                     "Malshiras": ["Malshiras", "Akluj"],
+                     "Pandharpur": ["Pandharpur", "Mangalwedha Road"],
+                     "Barshi": ["Barshi", "Bhoom Road"],
+                     "Madha": ["Madha", "Kurduwadi"],
+                     "Sangole": ["Sangole", "Mandrup"],
+                     "Akkalkot": ["Akkalkot", "Boroti"],
+                     "Mohol": ["Mohol", "Mandrup"],
+                     "Solapur South": ["Hotgi", "Kegaon"],
+                     "Karmala": ["Karmala", "Jeur"],
+                     "Mangalvedhe": ["Mangalvedha", "Solapur Road"]
+                   },
+                   "Kolhapur": {
+                     "Karvir": ["Kolhapur", "Rankala"],
+                     "Hatkanangle": ["Ichalkaranji", "Shiroli"],
+                     "Shirol": ["Shirol", "Kurundwad"],
+                     "Kagal": ["Kagal", "Nipani Border"],
+                     "Panhala": ["Panhala", "Top"],
+                     "Gadhinglaj": ["Gadhinglaj", "Kadgaon"],
+                     "Radhanagari": ["Radhanagari", "Kalammawadi"],
+                     "Chandgad": ["Chandgad", "Belgaon Border"],
+                     "Shahuwadi": ["Shahuwadi", "Padli"],
+                     "Bhudargad": ["Patgaon", "Gaganbawda Road"],
+                     "Ajra": ["Ajra", "Nesari"],
+                     "Bavda": ["Bavda", "Amba Ghat"]
+                   },
+                   "pune": {
+                     "Pune City": ["Pune", "Shivajinagar", "Kothrud", "Swargate"],
+                     "Haveli": ["Wagholi", "Sinhagad", "Dhayari", "Warje"],
+                     "Khed": ["Rajgurunagar", "Chakan"],
+                     "Baramati": ["Baramati", "Malegaon Khurd"],
+                     "Junnar": ["Junnar", "Otur"],
+                     "Shirur": ["Shirur", "Ranjangaon"],
+                     "Indapur": ["Indapur", "Bhigwan"],
+                     "Daund": ["Daund", "Yawat"],
+                     "Mawal": ["Talegaon Dabhade", "Vadgaon"],
+                     "Ambegaon": ["Ghodegaon", "Manchar"],
+                     "Purandhar": ["Saswad", "Narayanpur"],
+                     "Bhor": ["Bhor", "Velhe"],
+                     "Mulshi": ["Paud", "Pirangut"],
+                     "Velhe": ["Velhe", "Kelwade"]
+                   }
+                   
+                                         }
