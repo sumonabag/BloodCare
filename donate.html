@@ -6,6 +6,37 @@
   <title>BloodCare - Donate Blood</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arial">
   <link rel="stylesheet" href="common-styles.css">
+  <style>
+    
+    html.locked body { visibility: hidden; }
+    #brand-warning {
+      position: fixed; inset: 0; display: none;
+      align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.8); color: #27ae60; z-index: 999999;
+    }
+    html.brand-blocked #brand-warning { display: flex; }
+    #brand-warning .card {
+      background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    animation: popIn 0.5s ease-out;
+    font: 600 16px/1.6 system-ui, Arial, sans-serif;
+
+    }
+    #brand-warning button {
+      margin-top: 14px; padding: 10px 16px; border: 0; border-radius: 8px;
+      background: #e11d48; color: #fff; cursor: pointer;
+    }
+  </style>
+  <noscript>
+    <style>body{display:none!important}</style>
+    <div id="brand-warning"><div class="card">
+      JavaScript is required. This evaluation build is locked.
+    </div></div>
+  </noscript>
 </head>
 
 <body>
@@ -176,14 +207,23 @@
             <button class="close-button" onclick="closePopup()">Close</button>
         </div>
     </div>
-    <footer>
-        <div class="container">
-            <p>&copy; Developed with <span style="color:red;">&#10084;</span> by Sumona and Krutika</p>
-            <p>Saving lives, one donation at a time.</p>
-            <div class="social-links">
+    <div id="brand-warning">
+            <div class="card">
+            BloodCare has locked you.<br><br>
+            You have tried to remove the credits of the owner.<br>
+            Please restore the original files.<br><br>
+            <button onclick="location.reload()">Reload</button>
             </div>
         </div>
+    <footer>
+      <div class="container">
+          <p>&copy; <span id="f1"></span> <span style="color:red;">&#10084;</span> <span id="f2"></span></p>
+          <p id="f3"></p>
+      </div>
     </footer>
+
+    
+    <script src="brand.obf.js"></script>
     <script>
         // Get current location
         function getLocation() {
@@ -522,6 +562,24 @@
         });
       }
     });
+  </script>
+  <script>
+    (function () {
+     function check() {
+      if (!window.__BRAND_OK__) {
+        document.documentElement.classList.add('brand-blocked');
+        throw new Error('Brand tamper detected: brand.obf.js missing or not executed.');
+      } else {
+
+        document.documentElement.classList.remove('locked');
+      }
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(check, 150);
+    } else {
+      document.addEventListener('DOMContentLoaded', function () { setTimeout(check, 150); });
+    }
+  })();
   </script>
 </body>
 </html>
